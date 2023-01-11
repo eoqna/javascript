@@ -1,0 +1,206 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>계산기</title>
+  <style>
+      table, tr, td {
+          border: 1px solid black;
+      }
+
+      td {
+          width: 50px;
+          height: 50px;
+          text-align: center;
+      }
+      button {
+          border: 0;
+          background-color: white;
+          width: 100%;
+          height: 100%;
+      }
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td><span id="operator"></span></td>
+      <td colspan="3"><span id="result" style="font-weight: bold;"></span></td>
+    </tr>
+    <tr>
+      <td>
+        <button id="num-7">7</button>
+      </td>
+      <td>
+        <button id="num-8">8</button>
+      </td>
+      <td>
+        <button id="num-9">9</button>
+      </td>
+      <td>
+        <button id="devide">/</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button id="num-4">4</button>
+      </td>
+      <td>
+        <button id="num-5">5</button>
+      </td>
+      <td>
+        <button id="num-6">6</button>
+      </td>
+      <td>
+        <button id="mul">*</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button id="num-1">1</button>
+      </td>
+      <td>
+        <button id="num-2">2</button>
+      </td>
+      <td>
+        <button id="num-3">3</button>
+      </td>
+      <td>
+        <button id="minus">-</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button id="clear">C</button>
+      </td>
+      <td>
+        <button id="num-0">0</button>
+      </td>
+      <td>
+        <button id="cal">=</button>
+      </td>
+      <td>
+        <button id="plus">+</button>
+      </td>
+    </tr>
+
+  </table>
+
+  <script>
+    let num1 = '';
+    let num2 = '';
+    let operator = '';
+    const $result = document.querySelector('#result');
+    const $operator = document.querySelector('#operator');
+
+    function onClickNumber(number) {
+      if(!operator) {
+        num1 += number;
+        $result.textContent += number;
+        return;
+
+      }
+      if(!num2) {
+        $result.textContent = '';
+
+      }
+      num2 += number;
+      $result.textContent += number;
+
+    };
+
+    document.querySelector('#num-0').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-1').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-2').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-3').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-4').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-5').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-6').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-7').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-8').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+    document.querySelector('#num-9').addEventListener('click', (event) => {
+      onClickNumber(event.target.textContent);
+
+    });
+
+    const onClickOperator = (op) => () => {
+      if(num1) {
+        operator = op;
+        $operator.textContent = op;
+
+      } else {
+        alert('숫자를 먼저 입력해주세요.');
+
+      }
+
+    };
+
+    const onClickClear = function() {
+      num1 = '';
+      num2 = '';
+      operator = '';
+      $operator.textContent = '';
+      $result.textContent = '';
+
+    };
+
+    const onClickCal = function() {
+      if(!num2) {
+        alert('숫자를 먼저 입력해주세요.');
+        return;
+      }
+
+      if(operator === '+') {
+        $result.textContent = parseInt(num1) + parseInt(num2);
+
+      } else if(operator === '-') {
+        $result.textContent = parseInt(num1) - parseInt(num2);
+
+      } else if(operator === '*') {
+        $result.textContent = parseInt(num1) * parseInt(num2);
+
+      } else if(operator === '/') {
+        $result.textContent = parseInt(num1) / parseInt(num2);
+
+      }
+
+    };
+
+    document.querySelector('#plus').addEventListener('click', onClickOperator('+'));
+    document.querySelector('#minus').addEventListener('click', onClickOperator('-'));
+    document.querySelector('#devide').addEventListener('click', onClickOperator('/'));
+    document.querySelector('#mul').addEventListener('click', onClickOperator('*'));
+    document.querySelector('#cal').addEventListener('click', onClickCal);
+    document.querySelector('#clear').addEventListener('click', onClickClear);
+  </script>
+
+</body>
+</html>
