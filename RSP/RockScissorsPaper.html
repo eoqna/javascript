@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>가위바위보</title>
+  <style>
+    #computer {
+      width: 150px;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="computer"></div>
+  <div>
+    <button id="scissors" class="btn">가위</button>
+    <button id="rock" class="btn">바위</button>
+    <button id="paper" class="btn">보</button>
+  </div>
+  <div id="score">0</div>
+
+  <script>
+    const $computer = document.querySelector('#computer');
+    const $scissors = document.querySelector('#scissors');
+    const $rock = document.querySelector('#rock');
+    const $paper = document.querySelector('#paper');
+    const $score = document.querySelector('#score');
+    const  IMG_URL = './rsp.png';
+    $computer.style.background = `url(${IMG_URL}) 0 0`;
+    $computer.style.backgroundSize = 'auto 200px';
+    
+    const rspX = {
+      scissors: '0',
+      rock: '-220px',
+      paper: '-440px',
+    };
+
+    let computerChoice = 'scissors';
+    function changeBackground() {
+      if(computerChoice === 'scissors') {
+        computerChoice = 'rock';
+        
+      } else if(computerChoice === 'rock') {
+        computerChoice = 'paper';
+        
+      } else if(computerChoice === 'paper'){
+        computerChoice = 'scissors';
+        
+      }
+      $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+      $computer.style.backgroundSize = 'auto 200px';
+
+    }
+
+    const scoreTb = {
+      rock: 0,
+      scissors: 1,
+      paper: -1,
+    }
+
+    let intervalId = setInterval(changeBackground, 100);
+
+    let clickable = true; // 이벤트 리스너 함수를 제어하는 변수
+    let score = 0;
+    let win = 0;
+    let lose = 0;
+    const clickBtn = () => {
+      if(clickable) {
+        clearInterval(intervalId);
+        clickable = false;
+
+        const myChoice = event.target.id;
+        const myScore = scoreTb[myChoice];
+        const computerScore = scoreTb[computerChoice];
+        const diff = myScore - computerScore;
+
+        let msg;
+        // 2, -1은 승리조건, -2, 1은 패배조건, 0일 시 무승부
+        if([2, -1].includes(diff)) {
+          msg = '승리';
+          score += 1;
+          win += 1;
+        } else if([-2, 1].includes(diff)) {
+          msg = '패배';
+          score -= 1;
+          lose += 1;
+        } else if(diff === 0) {
+          msg = '무승부';
+          
+        }
+        $score.textContent = `${msg} score : ${score}점`;
+
+        if(win >= 3) {
+          $score.textContent = `축하합니다! 승리하셨습니다. SCORE - ${win} : ${lose}`;
+        } else if (lose >= 3) {
+          $score.textContent = `패배! 컴퓨터의 승리입니다. SCORE - ${win} : ${lose}`;
+        } else {
+          $score.textContent = `${msg} SCORE - ${win} : ${lose}`;
+          setTimeout(() => {
+          clickable = true;
+          intervalId = setInterval(changeBackground, 100);
+  
+        }, 1000);
+        }
+
+      }
+    };
+    $rock.addEventListener('click', clickBtn);
+    $scissors.addEventListener('click', clickBtn);
+    $paper.addEventListener('click', clickBtn);
+
+  </script>
+</body>
+</html>
