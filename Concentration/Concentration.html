@@ -55,6 +55,7 @@
       let shuffled = [];
       let clicked = [];
       let complited = [];
+      let clickable = false;
 
       function shuffle() { // 피셔-예이츠 셔플
         for(let i=0; colorCopy.length > 0; i++) {
@@ -80,6 +81,9 @@
       }
 
       function onClickCard() {
+        if(!clickable || complited.includes(this) || clicked[0] === this) {
+          return;
+        }
         this.classList.toggle('flipped');
         clicked.push(this);
         if(clicked.length !== 2) {   
@@ -88,25 +92,29 @@
         const firstBackCard = clicked[0].querySelector('.card-back').style.backgroundColor;
         const secondBackCard = clicked[1].querySelector('.card-back').style.backgroundColor;
         if(firstBackCard === secondBackCard) { // 뽑은 두 카드가 같은 경우
-          complited = complited.concat(clicked);
+          complited.push(clicked[0]);
+          complited.push(clicked[1]);
           clicked = [];
           if(complited.length !== total) {
             return;
           }
           setTimeout(() => {
             alert('축하합니다!');
+            resetGame();
           }, 1000);
           return;
         }
+        clickable = false;
         setTimeout(() => {
           clicked[0].classList.remove('flipped');
           clicked[1].classList.remove('flipped');
           clicked = [];
+          clickable = true;
         }, 500)
       }
 
-      let clickable = true;
       function startGame() {
+        clickable = false;
         shuffle();
         for(let i=0; i < total; i++) {
           const card = createCard(i);
@@ -124,6 +132,7 @@
           document.querySelectorAll('.card').forEach((card) => {
             card.classList.remove('flipped');
           });
+          clickable = true;
         }, 5000);
 
       }
